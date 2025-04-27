@@ -1,0 +1,23 @@
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.svm import SVC
+from sklearn.metrics import classification_report
+
+# Step 1: Load the Alzheimer’s dataset (Example dataset)
+url = "https://raw.githubusercontent.com/selva86/datasets/master/adni_data.csv"
+data = pd.read_csv(url)
+
+# Step 2: Preprocess data (select relevant features)
+X = data.drop(columns=['Diagnosis', 'ID'])  # drop 'Diagnosis' and 'ID'
+y = data['Diagnosis']  # Alzheimer's diagnosis (MCI, AD, CN)
+
+# Step 3: Train-test split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Step 4: Train an SVM model
+model = SVC(kernel='linear')
+model.fit(X_train, y_train)
+
+# Step 5: Predictions and Evaluation
+y_pred = model.predict(X_test)
+print(classification_report(y_test, y_pred))
